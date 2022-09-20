@@ -58,7 +58,7 @@ void parse_json(const char *response) {
     }
 
     // Trata parâmetro "message"
-    message = cJSON_GetObjectItemCaseSensitive(response_json, "message");
+    message = cJSON_GetObjectItemCaseSensitive(response_json, "method");
     if (cJSON_IsString(message) && (message->valuestring != NULL)) {
         // Trata comando "removido"
         if (strcmp("removido", message->valuestring) == 0) {

@@ -35,7 +35,8 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event) {
                 esp_mqtt_client_publish(client, central_path,
                                         define_modo_json(), 0, 1, 0);
             }
-            esp_mqtt_client_subscribe(client, central_path, 0);
+            // esp_mqtt_client_subscribe(client, central_path, 0);
+            esp_mqtt_client_subscribe(client, "v1/devices/me/rpc/request/+", 0);
 
             break;
         case MQTT_EVENT_DISCONNECTED:

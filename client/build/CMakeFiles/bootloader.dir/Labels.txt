@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/andre/esp/client/build/CMakeFiles/bootloader
+/home/andre/esp/client/build/CMakeFiles/bootloader.rule
+/home/andre/esp/client/build/CMakeFiles/bootloader-complete.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/andre/esp/client/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

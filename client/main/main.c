@@ -158,6 +158,19 @@ void enviaDadosServidor(void *params) {
         // Trata Botão pressionado
         trataBotaoPressionadoLowPower();
 
+        cJSON *envio_low_json = cJSON_CreateObject();
+        cJSON *estado_json = cJSON_CreateObject();
+
+        float humValue, tempValue;
+        dht_read_float_data(DHT_TYPE_DHT11, GPIO_DHT, &humValue, &tempValue);
+
+        cJSON *humidity = cJSON_CreateNumber(humValue);
+        cJSON *temperature = cJSON_CreateNumber(tempValue);
+
+        cJSON_AddItemReferenceToObject(estado_json, "umidade", humidity);
+        cJSON_AddItemReferenceToObject(estado_json, "temperatura", temperature);
+        cJSON_AddItemReferenceToObject(envio_low_json, "estado", estado_json);
+
         // Trata botão pressionado ao acordar
         if (flag_run) {
             printf("O botão foi acionado. Botão: %d\n", GPIO_BUTTON);
@@ -165,12 +178,15 @@ void enviaDadosServidor(void *params) {
             estado_entrada = estado_entrada ? 0 : 1;
             grava_int32_nvs("estado_entrada", estado_entrada);
 
-            enviaEstadosCentral();
+            mqtt_envia_mensagem(state_path, cJSON_Print(envio_low_json));
             vTaskDelay(2000 / portTICK_PERIOD_MS);
         } else {
-            enviaEstadosCentral();
+            mqtt_envia_mensagem(state_path, cJSON_Print(envio_low_json));
             vTaskDelay(2000 / portTICK_PERIOD_MS);
         }
+
+        cJSON_Delete(estado_json);
+        cJSON_Delete(envio_low_json);
 
         printf("Entrando em modo sleep...\n");
         startSleep();

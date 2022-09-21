@@ -31,7 +31,7 @@ xSemaphoreHandle sendDataMQTTSemaphore;
 #define GPIO_BUTTON CONFIG_ESP_BUTTON_GPIO_NUMBER
 
 char central_path[150], comodo_path[150];
-char humid_path[150], temp_path[150], state_path[150];
+char telemetry_path[150], attr_path[150], state_path[150];
 int flag_run = 0;
 xQueueHandle filaDeInterrupcao;
 
@@ -107,16 +107,16 @@ void definePaths() {
         printf("valor lido da func: %s\n", comodo_path);
     }
     // Define "path" de Umidade
-    memset(humid_path, '\0', sizeof humid_path);
-    strcpy(humid_path, "v1/devices/me/telemetry");
+    memset(telemetry_path, '\0', sizeof telemetry_path);
+    strcpy(telemetry_path, "v1/devices/me/telemetry");
 
     // Define "path" de Temperatura
-    memset(temp_path, '\0', sizeof temp_path);
-    strcpy(temp_path, "v1/devices/me/attributes");
+    memset(attr_path, '\0', sizeof attr_path);
+    strcpy(attr_path, "v1/devices/me/attributes");
 
     // Define "path" de Estado
     memset(state_path, '\0', sizeof state_path);
-    strcpy(state_path, "estado");
+    strcpy(state_path, "v1/devices/me/attributes");
 }
 
 void startSleep() {
@@ -195,9 +195,9 @@ void enviaDadosServidor(void *params) {
             cJSON_AddItemReferenceToObject(resTemperature, "temperatura",
                                            temperature);
 
-            mqtt_envia_mensagem(humid_path, cJSON_Print(resHumidity));
+            mqtt_envia_mensagem(attr_path, cJSON_Print(resHumidity));
             vTaskDelay(50 / portTICK_PERIOD_MS);
-            mqtt_envia_mensagem(temp_path, cJSON_Print(resTemperature));
+            mqtt_envia_mensagem(telemetry_path, cJSON_Print(resTemperature));
             vTaskDelay(2000 / portTICK_PERIOD_MS);
 
             cJSON_Delete(resHumidity);

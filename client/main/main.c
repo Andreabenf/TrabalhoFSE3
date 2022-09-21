@@ -21,6 +21,8 @@
 #include "send.h"
 #include "wifi.h"
 
+#include "driver/ledc.h"
+
 xSemaphoreHandle conexaoWifiSemaphore;
 xSemaphoreHandle sendDataMQTTSemaphore;
 
@@ -207,9 +209,30 @@ void enviaDadosServidor(void *params) {
 
 void configuraGPIO() {
     // Configuração dos pinos dos LEDs
-    gpio_pad_select_gpio(GPIO_LED);
-    // Configura os pinos dos LEDs como Output
-    gpio_set_direction(GPIO_LED, GPIO_MODE_OUTPUT);
+    // gpio_pad_select_gpio(GPIO_LED);
+    // // Configura os pinos dos LEDs como Output
+    // gpio_set_direction(GPIO_LED, GPIO_MODE_OUTPUT);
+
+    // Configuração do Timer
+    ledc_timer_config_t timer_config = {
+        .speed_mode = LEDC_LOW_SPEED_MODE,
+        .duty_resolution = LEDC_TIMER_8_BIT,
+        .timer_num = LEDC_TIMER_0,
+        .freq_hz = 1000,
+        .clk_cfg = LEDC_AUTO_CLK
+    };
+    ledc_timer_config(&timer_config);
+
+    // Configuração do Canal
+    ledc_channel_config_t channel_config = {
+        .gpio_num = GPIO_LED,
+        .speed_mode = LEDC_LOW_SPEED_MODE,
+        .channel = LEDC_CHANNEL_0,
+        .timer_sel = LEDC_TIMER_0,
+        .duty = 0,
+        .hpoint = 0
+    };
+    ledc_channel_config(&channel_config);
 
     // Configuração do pino do Botão
     gpio_pad_select_gpio(GPIO_BUTTON);

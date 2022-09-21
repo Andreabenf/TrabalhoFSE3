@@ -15,6 +15,8 @@
 #include "nvs_flash.h"
 #include "send.h"
 
+#include "driver/ledc.h"
+
 extern xSemaphoreHandle sendDataMQTTSemaphore;
 extern int flag_run;
 
@@ -66,17 +68,24 @@ void parse_json(const char *response) {
             esp_restart();
         }
 
-        // Trata comando "toggle"
-        if (strcmp("toggle", message->valuestring) == 0) {
+        // Trata comando "sendValue"
+        if (strcmp("sendValue", message->valuestring) == 0) {
             int32_t estado_saida = le_int32_nvs("estado_saida");
             estado_saida = estado_saida ? 0 : 1;
-            gpio_set_level(GPIO_LED, estado_saida);
+
+            cJSON *parameters = NULL;
+            parameters = cJSON_GetObjectItem(response_json, "params");
+            printf("#####################%d AAAAAAAAAAAAAAA", parameters->valueint);
+            ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, parameters->valueint);
+            ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+            // gpio_set_level(GPIO_LED, estado_saida);
+            
+            
             grava_int32_nvs("estado_saida", estado_saida);
             enviaEstadosCentral();
         }
     }
 
     // cJSON_Delete(esp_host);
-    // cJSON_Delete(message);
     cJSON_Delete(response_json);
 }

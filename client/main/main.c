@@ -155,7 +155,7 @@ void enviaDadosServidor(void *params) {
         definePaths();
 
 #ifdef CONFIG_BATERIA
-        // Trata Botão pressionado
+        // Trata Botão pressionadoCONFIG_BATERIA
         trataBotaoPressionadoLowPower();
 
         cJSON *envio_low_json = cJSON_CreateObject();
@@ -249,6 +249,12 @@ void configuraGPIO() {
         .hpoint = 0
     };
     ledc_channel_config(&channel_config);
+
+    int32_t intensidade_led = le_int32_nvs("intensidade_led");
+    if (intensidade_led != -1) {
+        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, intensidade_led);
+        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+    }
 
     // Configuração do pino do Botão
     gpio_pad_select_gpio(GPIO_BUTTON);

@@ -78,6 +78,7 @@ void parse_json(const char *response) {
             printf("#####################%d AAAAAAAAAAAAAAA", parameters->valueint);
             ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, parameters->valueint);
             ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+            grava_int32_nvs("intensidade_led", parameters->valueint);
             // gpio_set_level(GPIO_LED, estado_saida);
             
             

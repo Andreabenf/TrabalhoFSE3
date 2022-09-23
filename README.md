@@ -6,9 +6,9 @@ André Aben-Athar de Freitas | 170056155 | Andreabenf
 Lucas Ganda Carvalho| 170039668 | lucasgandac
 
 ## Descrição
-Esse trabalho é um projeto constituído por uma ESP32 conectada à Wi-fi por protocolo MQTT que permite o controle e visualização dos dados de sensores.
+Esse trabalho é um projeto constituído por uma ESP32 conectada à Wi-fi que permite o controle e visualização dos dados de sensores em uma Dashboard através da utilização do protocolo MQTT .
 
-No nosso projeto está implementado a leitura e controle de um sensor de temperatura, um de umidade, um LED PWM e o modo bateria/energia.
+No nosso projeto está implementado a leitura e controle de um sensor de temperatura, um de umidade, um LED por PWM e o modo bateria/energia.
 
 ## Execução
 
